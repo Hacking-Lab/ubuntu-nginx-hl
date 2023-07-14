@@ -1,5 +1,5 @@
-# ubuntu-18-nginx-hl
-Ubuntu 18 NGINX based on ubuntu-18-base-hl
+# ubuntu-nginx-hl
+Ubuntu NGINX based on ubuntu-base-hl
 
 ## Document Root
 * `/opt/www/`
