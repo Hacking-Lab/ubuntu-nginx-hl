@@ -1,14 +1,26 @@
 FROM hackinglab/ubuntu-base-hl:22.04
 LABEL maintainer="Ivan Buetler <ivan.buetler@hacking-lab.com>"
 
-# Add the files
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Prevent services from starting during install (important under QEMU)
+RUN echo '#!/bin/sh\nexit 101' > /usr/sbin/policy-rc.d && \
+    chmod +x /usr/sbin/policy-rc.d
+
+# Add files
 ADD root /
 
+# Install required packages
 RUN apt-get update && \
-    apt-get install -y nginx vim openssl && \
-    rm -rf /var/lib/apt/lists/* && \
-    chown -R www-data:www-data /var/lib/nginx && \
-    chown -R www-data:www-data /opt/www
+    apt-get install -y --no-install-recommends \
+        nginx \
+        vim \
+        openssl \
+        passwd \
+        adduser \
+    && rm -rf /var/lib/apt/lists/* && \
+    chown -R www-data:www-data /var/lib/nginx || true && \
+    chown -R www-data:www-data /opt/www || true
 
-# Expose the ports for nginx
+# Expose port
 EXPOSE 80
